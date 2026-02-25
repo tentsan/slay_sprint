@@ -3,10 +3,15 @@ import { Game } from './game.js';
 
 async function init() {
   try {
+    const fetchText = (url) => fetch(url).then(r => {
+      if (!r.ok) throw new Error(`Failed to fetch ${url}: ${r.status} ${r.statusText}`);
+      return r.text();
+    });
+
     const [enemyText, rewardText, playerText] = await Promise.all([
-      fetch('data/enemies.csv').then(r => r.text()),
-      fetch('data/rewards.csv').then(r => r.text()),
-      fetch('data/player.csv').then(r => r.text()),
+      fetchText('data/enemies.csv'),
+      fetchText('data/rewards.csv'),
+      fetchText('data/player.csv'),
     ]);
 
     const enemies = parseCSV(enemyText);
