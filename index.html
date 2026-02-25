@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slay Sprint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game-container">
+
+    <!-- Loading Screen -->
+    <section id="screen-loading" class="screen active">
+      <div class="screen-content">
+        <p class="loading-text">Loading...</p>
+      </div>
+    </section>
+
+    <!-- Title Screen -->
+    <section id="screen-title" class="screen">
+      <div class="screen-content">
+        <h1 class="game-title">SLAY SPRINT</h1>
+        <p class="game-subtitle">Auto-Battle RPG</p>
+        <button id="btn-start" class="btn btn-primary">START GAME</button>
+      </div>
+    </section>
+
+    <!-- Battle Screen -->
+    <section id="screen-battle" class="screen">
+      <div class="screen-content">
+        <div class="battle-header">
+          <span id="battle-count">Battle 1 / 10</span>
+        </div>
+
+        <div class="battle-arena">
+          <!-- Player Side -->
+          <div class="combatant combatant-player">
+            <div class="combatant-name" id="player-name">Hero</div>
+            <div class="combatant-emoji" id="player-emoji"></div>
+            <div class="hp-bar-container">
+              <div class="hp-bar">
+                <div class="hp-bar-fill" id="player-hp-bar"></div>
+              </div>
+              <span class="hp-text" id="player-hp-text">100 / 100</span>
+            </div>
+            <div class="combatant-stats" id="player-stats"></div>
+            <div class="damage-anchor" id="player-damage-anchor"></div>
+          </div>
+
+          <div class="battle-vs">VS</div>
+
+          <!-- Enemy Side -->
+          <div class="combatant combatant-enemy">
+            <div class="combatant-name" id="enemy-name">Enemy</div>
+            <div class="combatant-emoji" id="enemy-emoji"></div>
+            <div class="hp-bar-container">
+              <div class="hp-bar">
+                <div class="hp-bar-fill hp-bar-fill-enemy" id="enemy-hp-bar"></div>
+              </div>
+              <span class="hp-text" id="enemy-hp-text">40 / 40</span>
+            </div>
+            <div class="combatant-stats" id="enemy-stats"></div>
+            <div class="damage-anchor" id="enemy-damage-anchor"></div>
+          </div>
+        </div>
+
+        <div class="battle-log-container">
+          <div class="battle-log" id="battle-log"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reward Screen -->
+    <section id="screen-reward" class="screen">
+      <div class="screen-content">
+        <h2 class="reward-title">VICTORY!</h2>
+        <p class="reward-subtitle">Choose your reward:</p>
+        <div class="reward-cards" id="reward-cards"></div>
+      </div>
+    </section>
+
+    <!-- Game Over Screen -->
+    <section id="screen-gameover" class="screen">
+      <div class="screen-content">
+        <h2 class="gameover-title" id="gameover-title">GAME OVER</h2>
+        <p class="gameover-subtitle" id="gameover-subtitle"></p>
+        <div class="gameover-stats" id="gameover-stats"></div>
+        <button id="btn-title" class="btn btn-primary">BACK TO TITLE</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
