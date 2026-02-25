@@ -41,12 +41,12 @@ export async function runBattle(player, enemy, onLog) {
     // First attacker acts
     await executeAttack(first.attacker, first.defender, first.tag, onLog);
     await delay(TURN_DELAY_MS);
-    if (first.defender.hp <= 0) break;
+    if (first.defender.hp <= 0 || first.attacker.hp <= 0) break;
 
     // Second attacker acts
     await executeAttack(second.attacker, second.defender, second.tag, onLog);
     await delay(TURN_DELAY_MS);
-    if (second.defender.hp <= 0) break;
+    if (second.defender.hp <= 0 || second.attacker.hp <= 0) break;
   }
 
   player.hp = Math.max(0, player.hp);
@@ -96,8 +96,8 @@ async function executeAttack(attacker, defender, attackerTag, onLog) {
     onLog({ text: `${attacker.name} takes ${defender.thorns} thorn damage!`, type: 'damage' });
   }
 
-  // Enemy special ability
-  if (attacker.special && attacker.special_chance && Math.random() < attacker.special_chance) {
+  // Enemy special ability (only if attacker survived thorns)
+  if (attacker.hp > 0 && attacker.special && attacker.special_chance && Math.random() < attacker.special_chance) {
     await applySpecial(attacker, defender, onLog);
   }
 }
