@@ -8,6 +8,12 @@ export async function runBattle(player, enemy, onLog) {
   enemy.statuses = [];
   enemy.maxHp = enemy.hp;
 
+  // Save base stats so weaken/shield don't permanently alter them
+  const playerBaseAttack = player.attack;
+  const playerBaseDefense = player.defense;
+  const enemyBaseAttack = enemy.attack;
+  const enemyBaseDefense = enemy.defense;
+
   onLog({ text: `Battle Start! ${player.name} vs ${enemy.name}`, type: 'info' });
   await delay(TURN_DELAY_MS);
 
@@ -48,6 +54,12 @@ export async function runBattle(player, enemy, onLog) {
     await delay(TURN_DELAY_MS);
     if (second.defender.hp <= 0 || second.attacker.hp <= 0) break;
   }
+
+  // Restore base stats so weaken/shield effects don't carry over
+  player.attack = playerBaseAttack;
+  player.defense = playerBaseDefense;
+  enemy.attack = enemyBaseAttack;
+  enemy.defense = enemyBaseDefense;
 
   player.hp = Math.max(0, player.hp);
   enemy.hp = Math.max(0, enemy.hp);
