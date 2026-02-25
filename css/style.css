@@ -294,6 +294,9 @@ body {
 }
 
 .reward-card {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
   width: 180px;
   padding: 1.5rem 1rem;
   background: var(--bg-card);

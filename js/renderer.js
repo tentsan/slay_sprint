@@ -62,13 +62,22 @@ export class Renderer {
   renderRewards(choices, onSelect) {
     this.els.rewardCards.innerHTML = '';
     choices.forEach(reward => {
-      const card = document.createElement('div');
+      const card = document.createElement('button');
       card.className = 'reward-card';
-      card.innerHTML = `
-        <div class="reward-card-emoji">${reward.emoji}</div>
-        <div class="reward-card-name">${reward.name}</div>
-        <div class="reward-card-desc">${reward.description}</div>
-      `;
+
+      const emoji = document.createElement('div');
+      emoji.className = 'reward-card-emoji';
+      emoji.textContent = reward.emoji;
+
+      const name = document.createElement('div');
+      name.className = 'reward-card-name';
+      name.textContent = reward.name;
+
+      const desc = document.createElement('div');
+      desc.className = 'reward-card-desc';
+      desc.textContent = reward.description;
+
+      card.append(emoji, name, desc);
       card.addEventListener('click', () => onSelect(reward));
       this.els.rewardCards.appendChild(card);
     });
