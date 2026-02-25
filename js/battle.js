@@ -4,7 +4,7 @@ export async function runBattle(player, enemy, onLog) {
   let turn = 0;
 
   // Reset temporary battle state
-  player.statuses = player.statuses || [];
+  player.statuses = [];
   enemy.statuses = [];
   enemy.maxHp = enemy.hp;
 
@@ -118,7 +118,8 @@ async function applySpecial(attacker, defender, onLog) {
       break;
     case 'lifesteal': {
       const steal = Math.floor(attacker.attack * 0.5);
-      attacker.hp = Math.min((attacker.maxHp || attacker.hp) + steal, attacker.maxHp || 999);
+      const maxHp = attacker.maxHp || attacker.max_hp || 999;
+      attacker.hp = Math.min(attacker.hp + steal, maxHp);
       onLog({ text: `${attacker.name} drains ${steal} HP!`, type: 'special' });
       break;
     }
@@ -135,7 +136,8 @@ async function applySpecial(attacker, defender, onLog) {
     case 'drain': {
       const drainVal = 5;
       defender.hp -= drainVal;
-      attacker.hp = Math.min((attacker.maxHp || 999), attacker.hp + drainVal);
+      const maxHp = attacker.maxHp || attacker.max_hp || 999;
+      attacker.hp = Math.min(attacker.hp + drainVal, maxHp);
       onLog({ text: `${attacker.name} drains ${drainVal} HP from ${defender.name}!`, type: 'special' });
       break;
     }
