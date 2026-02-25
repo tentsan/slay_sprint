@@ -1,0 +1,11 @@
+id,name,emoji,hp,attack,defense,speed,special,special_chance
+slime,Green Slime,🟢,30,5,2,3,,0
+goblin,Goblin Warrior,👺,40,8,3,5,,0
+skeleton,Skeleton,💀,35,7,1,4,poison,0.3
+bat,Vampire Bat,🦇,25,6,2,7,lifesteal,0.4
+golem,Stone Golem,🗿,60,10,8,1,,0
+witch,Dark Witch,🧙,30,12,2,4,weaken,0.5
+wolf,Dire Wolf,🐺,35,9,3,6,,0
+knight,Fallen Knight,⚔️,50,11,6,3,shield,0.3
+dragon,Young Dragon,🐉,70,14,5,4,burn,0.4
+demon,Demon Lord,😈,90,16,7,5,drain,0.3
