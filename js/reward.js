@@ -1,27 +1,18 @@
 /**
- * Pick N random rewards without duplicates.
+ * Pick N random cards from a card pool without duplicates.
  */
-export function getRewardChoices(allRewards, count = 3) {
-  const shuffled = [...allRewards].sort(() => Math.random() - 0.5);
+export function getCardChoices(cardPool, count = 3) {
+  const shuffled = [...cardPool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
   return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
 /**
- * Apply a chosen reward to the player.
+ * Add a chosen card to the player's deck.
  */
-export function applyReward(player, reward) {
-  const value = Number(reward.value);
-
-  if (reward.type === 'instant') {
-    if (reward.stat === 'hp') {
-      player.hp = Math.min(player.hp + value, player.max_hp);
-    }
-  } else if (reward.type === 'permanent') {
-    if (reward.stat === 'max_hp') {
-      player.max_hp += value;
-      player.hp += value;
-    } else {
-      player[reward.stat] = (player[reward.stat] || 0) + value;
-    }
-  }
+export function applyCardReward(player, card) {
+  player.cards.push(structuredClone(card));
 }
