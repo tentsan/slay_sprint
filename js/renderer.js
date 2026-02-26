@@ -78,7 +78,7 @@ export class Renderer {
       desc.textContent = reward.description;
 
       card.append(emoji, name, desc);
-      card.addEventListener('click', () => onSelect(reward));
+      card.addEventListener('click', () => onSelect(reward), { once: true });
       this.els.rewardCards.appendChild(card);
     });
   }
