@@ -11,3 +11,7 @@ regen,Healing Amulet,💎,permanent,regen,3,Regenerate 3 HP per turn
 crit,Lucky Charm,🍀,permanent,crit_chance,0.15,+15% critical hit chance
 thorns,Spiked Armor,🦔,permanent,thorns,3,Deal 3 damage when hit
 lifesteal,Vampire Fang,🧛,permanent,lifesteal,0.1,Heal 10% of damage dealt
+int_up,Arcane Tome,📘,permanent,int,2,+2 INT permanently
+int_up_big,Elder Staff,🔮,permanent,int,4,+4 INT permanently
+men_up,Mind Ward,🧿,permanent,men,2,+2 MEN permanently
+men_up_big,Mystic Robe,👘,permanent,men,4,+4 MEN permanently

@@ -11,8 +11,12 @@ export async function runBattle(player, enemy, onLog) {
   // Save base stats so weaken/shield don't permanently alter them
   const playerBaseAttack = player.attack;
   const playerBaseDefense = player.defense;
+  const playerBaseInt = player.int || 0;
+  const playerBaseMen = player.men || 0;
   const enemyBaseAttack = enemy.attack;
   const enemyBaseDefense = enemy.defense;
+  const enemyBaseInt = enemy.int || 0;
+  const enemyBaseMen = enemy.men || 0;
 
   onLog({ text: `Battle Start! ${player.name} vs ${enemy.name}`, type: 'info' });
   await delay(TURN_DELAY_MS);
@@ -58,8 +62,12 @@ export async function runBattle(player, enemy, onLog) {
   // Restore base stats so weaken/shield effects don't carry over
   player.attack = playerBaseAttack;
   player.defense = playerBaseDefense;
+  player.int = playerBaseInt;
+  player.men = playerBaseMen;
   enemy.attack = enemyBaseAttack;
   enemy.defense = enemyBaseDefense;
+  enemy.int = enemyBaseInt;
+  enemy.men = enemyBaseMen;
 
   player.hp = Math.max(0, player.hp);
   enemy.hp = Math.max(0, enemy.hp);
@@ -74,7 +82,26 @@ export async function runBattle(player, enemy, onLog) {
 }
 
 async function executeAttack(attacker, defender, attackerTag, onLog) {
-  let rawDamage = attacker.attack;
+  // Determine attack type
+  let attackType;
+  if (attackerTag === 'player') {
+    // Player auto-selects: use magic if INT > ATK
+    attackType = (attacker.int || 0) > attacker.attack ? 'magic' : 'physical';
+  } else {
+    // Enemy uses CSV-defined attack type
+    attackType = attacker.attack_type || 'physical';
+  }
+
+  // Calculate raw damage based on attack type
+  let rawDamage;
+  let defStat;
+  if (attackType === 'magic') {
+    rawDamage = attacker.int || 0;
+    defStat = defender.men || 0;
+  } else {
+    rawDamage = attacker.attack;
+    defStat = defender.defense;
+  }
 
   // Crit check (only player has crit stats)
   let isCrit = false;
@@ -84,13 +111,14 @@ async function executeAttack(attacker, defender, attackerTag, onLog) {
   }
 
   // Apply defense
-  const finalDamage = Math.max(1, rawDamage - defender.defense);
+  const finalDamage = Math.max(1, rawDamage - defStat);
   defender.hp -= finalDamage;
 
+  const tag = attackType === 'magic' ? '[Magic] ' : '[Physical] ';
   if (isCrit) {
-    onLog({ text: `CRITICAL! ${attacker.name} deals ${finalDamage} damage to ${defender.name}!`, type: 'crit' });
+    onLog({ text: `${tag}CRITICAL! ${attacker.name} deals ${finalDamage} damage to ${defender.name}!`, type: 'crit' });
   } else {
-    onLog({ text: `${attacker.name} attacks ${defender.name} for ${finalDamage} damage`, type: 'damage' });
+    onLog({ text: `${tag}${attacker.name} attacks ${defender.name} for ${finalDamage} damage`, type: 'damage' });
   }
 
   // Lifesteal (player permanent stat)
@@ -102,19 +130,19 @@ async function executeAttack(attacker, defender, attackerTag, onLog) {
     }
   }
 
-  // Thorns (defender reflects damage)
-  if (defender.thorns && defender.thorns > 0) {
+  // Thorns (defender reflects damage) — physical attacks only
+  if (attackType === 'physical' && defender.thorns && defender.thorns > 0) {
     attacker.hp -= defender.thorns;
     onLog({ text: `${attacker.name} takes ${defender.thorns} thorn damage!`, type: 'damage' });
   }
 
-  // Enemy special ability (only if attacker survived thorns)
+  // Enemy special ability (only if attacker survived)
   if (attacker.hp > 0 && attacker.special && attacker.special_chance && Math.random() < attacker.special_chance) {
-    await applySpecial(attacker, defender, onLog);
+    await applySpecial(attacker, defender, attackerTag, onLog);
   }
 }
 
-async function applySpecial(attacker, defender, onLog) {
+async function applySpecial(attacker, defender, attackerTag, onLog) {
   const special = attacker.special;
 
   switch (special) {
@@ -129,16 +157,33 @@ async function applySpecial(attacker, defender, onLog) {
       onLog({ text: `${attacker.name} burns ${defender.name}! (4 dmg for 2 turns)`, type: 'special' });
       break;
     case 'lifesteal': {
-      const steal = Math.floor(attacker.attack * 0.5);
+      // Use INT for magic attackers, ATK for physical
+      const offStat = (attacker.attack_type === 'magic') ? (attacker.int || 0) : attacker.attack;
+      const steal = Math.floor(offStat * 0.5);
       const maxHp = attacker.maxHp || attacker.max_hp || 999;
       attacker.hp = Math.min(attacker.hp + steal, maxHp);
       onLog({ text: `${attacker.name} drains ${steal} HP!`, type: 'special' });
       break;
     }
-    case 'weaken':
-      defender.attack = Math.max(1, defender.attack - 2);
-      onLog({ text: `${attacker.name} weakens ${defender.name}! (-2 ATK)`, type: 'special' });
+    case 'weaken': {
+      // Reduce the stat the defender actually uses for attacking
+      let defenderUsesMagic;
+      if (attackerTag === 'enemy') {
+        // Defender is player: check if player uses magic
+        defenderUsesMagic = (defender.int || 0) > defender.attack;
+      } else {
+        // Defender is enemy: check attack_type
+        defenderUsesMagic = defender.attack_type === 'magic';
+      }
+      if (defenderUsesMagic) {
+        defender.int = Math.max(1, (defender.int || 0) - 2);
+        onLog({ text: `${attacker.name} weakens ${defender.name}! (-2 INT)`, type: 'special' });
+      } else {
+        defender.attack = Math.max(1, defender.attack - 2);
+        onLog({ text: `${attacker.name} weakens ${defender.name}! (-2 ATK)`, type: 'special' });
+      }
       break;
+    }
     case 'shield': {
       const shieldVal = 5;
       attacker.defense += shieldVal;

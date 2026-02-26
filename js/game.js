@@ -51,8 +51,8 @@ export class Game {
 
   selectEnemy(battleNumber) {
     const sorted = [...this.enemies].sort((a, b) => {
-      const scoreA = a.hp + a.attack * 3 + a.defense * 2;
-      const scoreB = b.hp + b.attack * 3 + b.defense * 2;
+      const scoreA = a.hp + Math.max(a.attack, a.int || 0) * 3 + Math.max(a.defense, a.men || 0) * 2;
+      const scoreB = b.hp + Math.max(b.attack, b.int || 0) * 3 + Math.max(b.defense, b.men || 0) * 2;
       return scoreA - scoreB;
     });
 
