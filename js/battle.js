@@ -47,7 +47,7 @@ function selectCard(combatant) {
 function playCard(user, opponent, card, onLog) {
   onLog({ text: `${user.name} played [${card.name}]!`, type: 'info' });
 
-  for (const effect of card.effects) {
+  for (const effect of (Array.isArray(card.effects) ? card.effects : [])) {
     const target = effect.target === 'self' ? user : opponent;
     resolveEffect(user, target, effect, onLog);
   }
