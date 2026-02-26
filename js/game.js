@@ -45,7 +45,7 @@ export class Game {
   startNewRun() {
     this.player = { ...this.playerBase };
     this.player.hp = this.player.max_hp;
-    this.player.cards = [...DEFAULT_CARDS];
+    this.player.cards = structuredClone(DEFAULT_CARDS);
     this.currentBattle = 0;
     this.startBattle();
   }

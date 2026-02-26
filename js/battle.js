@@ -56,14 +56,17 @@ function playCard(user, opponent, card, onLog) {
 function resolveEffect(user, target, effect, onLog) {
   switch (effect.action) {
     case 'damage': {
-      const damage = effect.value;
+      const damage = Math.floor(Number(effect.value));
+      if (!Number.isFinite(damage) || damage <= 0) break;
       target.hp -= damage;
       onLog({ text: `${target.name} takes ${damage} damage!`, type: 'damage' });
       break;
     }
     case 'heal': {
+      const heal = Math.floor(Number(effect.value));
+      if (!Number.isFinite(heal) || heal <= 0) break;
       const maxHp = target.max_hp || target.maxHp || 999;
-      const healed = Math.min(effect.value, maxHp - target.hp);
+      const healed = Math.min(heal, maxHp - target.hp);
       if (healed > 0) {
         target.hp += healed;
         onLog({ text: `${target.name} heals ${healed} HP!`, type: 'heal' });
