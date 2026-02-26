@@ -1,6 +1,7 @@
 import { runBattle } from './battle.js';
 import { getRewardChoices, applyReward } from './reward.js';
 import { Renderer } from './renderer.js';
+import { DEFAULT_CARDS } from './cards.js';
 
 const TOTAL_BATTLES = 10;
 
@@ -44,17 +45,13 @@ export class Game {
   startNewRun() {
     this.player = { ...this.playerBase };
     this.player.hp = this.player.max_hp;
-    this.player.statuses = [];
+    this.player.cards = structuredClone(DEFAULT_CARDS);
     this.currentBattle = 0;
     this.startBattle();
   }
 
   selectEnemy(battleNumber) {
-    const sorted = [...this.enemies].sort((a, b) => {
-      const scoreA = a.hp + Math.max(a.attack, a.int || 0) * 3 + Math.max(a.defense, a.men || 0) * 2;
-      const scoreB = b.hp + Math.max(b.attack, b.int || 0) * 3 + Math.max(b.defense, b.men || 0) * 2;
-      return scoreA - scoreB;
-    });
+    const sorted = [...this.enemies].sort((a, b) => a.hp - b.hp);
 
     // Battle 10 (index 9): boss = hardest enemy
     if (battleNumber === TOTAL_BATTLES - 1) {
@@ -63,7 +60,10 @@ export class Game {
 
     const tierSize = Math.ceil(sorted.length / 3);
     const tier = Math.min(Math.floor(battleNumber / 3), 2);
-    const tierEnemies = sorted.slice(tier * tierSize, (tier + 1) * tierSize);
+    let tierEnemies = sorted.slice(tier * tierSize, (tier + 1) * tierSize);
+    if (tierEnemies.length === 0) {
+      tierEnemies = sorted;
+    }
     const pick = tierEnemies[Math.floor(Math.random() * tierEnemies.length)];
     return JSON.parse(JSON.stringify(pick));
   }
