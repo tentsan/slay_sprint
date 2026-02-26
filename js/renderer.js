@@ -61,6 +61,8 @@ export class Renderer {
 
   renderRewards(choices, onSelect) {
     this.els.rewardCards.innerHTML = '';
+    this.els.rewardCards.style.pointerEvents = '';
+    let hasSelected = false;
     choices.forEach(reward => {
       const card = document.createElement('button');
       card.className = 'reward-card';
@@ -78,7 +80,12 @@ export class Renderer {
       desc.textContent = reward.description;
 
       card.append(emoji, name, desc);
-      card.addEventListener('click', () => onSelect(reward), { once: true });
+      card.addEventListener('click', () => {
+        if (hasSelected) return;
+        hasSelected = true;
+        this.els.rewardCards.style.pointerEvents = 'none';
+        onSelect(reward);
+      });
       this.els.rewardCards.appendChild(card);
     });
   }
