@@ -40,7 +40,7 @@ export async function runBattle(player, enemy, onLog) {
 }
 
 function selectCard(combatant) {
-  const cards = combatant.cards || DEFAULT_CARDS;
+  const cards = combatant.cards?.length > 0 ? combatant.cards : DEFAULT_CARDS;
   return cards[Math.floor(Math.random() * cards.length)];
 }
 
