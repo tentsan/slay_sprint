@@ -30,8 +30,8 @@ export class Renderer {
     this.els.enemyEmoji.textContent = enemy.emoji;
 
     this.updateHP(player, enemy);
-    this.els.playerStats.textContent = `ATK:${player.attack} DEF:${player.defense} SPD:${player.speed}`;
-    this.els.enemyStats.textContent = `ATK:${enemy.attack} DEF:${enemy.defense} SPD:${enemy.speed}`;
+    this.els.playerStats.textContent = `ATK:${player.attack} DEF:${player.defense} INT:${player.int || 0} MEN:${player.men || 0} SPD:${player.speed}`;
+    this.els.enemyStats.textContent = `ATK:${enemy.attack} DEF:${enemy.defense} INT:${enemy.int || 0} MEN:${enemy.men || 0} SPD:${enemy.speed}`;
   }
 
   updateHP(player, enemy) {
@@ -100,7 +100,7 @@ export class Renderer {
 
     statsEl.innerHTML = `
       Battles Cleared: ${battlesCompleted} / ${totalBattles}<br>
-      Final Stats - ATK:${player.attack} DEF:${player.defense} SPD:${player.speed}<br>
+      Final Stats - ATK:${player.attack} DEF:${player.defense} INT:${player.int || 0} MEN:${player.men || 0} SPD:${player.speed}<br>
       Max HP: ${player.max_hp}
     `;
   }
