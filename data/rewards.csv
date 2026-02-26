@@ -1,17 +1,4 @@
 id,name,emoji,type,stat,value,description
 hp_potion,Health Potion,🧪,instant,hp,20,Restore 20 HP
-atk_up,Sharpened Blade,🗡️,permanent,attack,2,+2 Attack permanently
-def_up,Iron Shield,🛡️,permanent,defense,2,+2 Defense permanently
-spd_up,Swift Boots,👢,permanent,speed,1,+1 Speed permanently
-max_hp_up,Heart Crystal,❤️,permanent,max_hp,10,+10 Max HP permanently
 big_heal,Full Restore,✨,instant,hp,999,Fully restore HP
-atk_up_big,Demon Sword,⚔️,permanent,attack,4,+4 Attack permanently
-def_up_big,Adamant Armor,🏰,permanent,defense,4,+4 Defense permanently
-regen,Healing Amulet,💎,permanent,regen,3,Regenerate 3 HP per turn
-crit,Lucky Charm,🍀,permanent,crit_chance,0.15,+15% critical hit chance
-thorns,Spiked Armor,🦔,permanent,thorns,3,Deal 3 damage when hit
-lifesteal,Vampire Fang,🧛,permanent,lifesteal,0.1,Heal 10% of damage dealt
-int_up,Arcane Tome,📘,permanent,int,2,+2 INT permanently
-int_up_big,Elder Staff,🔮,permanent,int,4,+4 INT permanently
-men_up,Mind Ward,🧿,permanent,men,2,+2 MEN permanently
-men_up_big,Mystic Robe,👘,permanent,men,4,+4 MEN permanently
+max_hp_up,Heart Crystal,❤️,permanent,max_hp,10,+10 Max HP permanently
