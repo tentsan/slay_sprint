@@ -1,4 +1,0 @@
-id,name,emoji,type,stat,value,description
-hp_potion,Health Potion,🧪,instant,hp,20,Restore 20 HP
-big_heal,Full Restore,✨,instant,hp,999,Fully restore HP
-max_hp_up,Heart Crystal,❤️,permanent,max_hp,10,+10 Max HP permanently

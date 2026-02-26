@@ -1,14 +1,13 @@
 import { runBattle } from './battle.js';
-import { getRewardChoices, applyReward } from './reward.js';
+import { getCardChoices, applyCardReward } from './reward.js';
 import { Renderer } from './renderer.js';
-import { DEFAULT_CARDS } from './cards.js';
+import { DEFAULT_CARDS, REWARD_CARDS } from './cards.js';
 
 const TOTAL_BATTLES = 10;
 
 export class Game {
-  constructor(enemies, rewards, playerBase) {
+  constructor(enemies, playerBase) {
     this.enemies = enemies;
-    this.rewards = rewards;
     this.playerBase = playerBase;
     this.renderer = new Renderer();
     this.state = 'loading';
@@ -99,11 +98,11 @@ export class Game {
   }
 
   showRewards() {
-    const choices = getRewardChoices(this.rewards, 3);
+    const choices = getCardChoices(REWARD_CARDS, 3);
     this.transition('reward');
-    this.renderer.renderRewards(choices, (reward) => {
+    this.renderer.renderRewards(choices, (card) => {
       if (this.isTransitioning) return;
-      applyReward(this.player, reward);
+      applyCardReward(this.player, card);
       this.startBattle();
     });
   }

@@ -8,17 +8,15 @@ async function init() {
       return r.text();
     });
 
-    const [enemyText, rewardText, playerText] = await Promise.all([
+    const [enemyText, playerText] = await Promise.all([
       fetchText('data/enemies.csv'),
-      fetchText('data/rewards.csv'),
       fetchText('data/player.csv'),
     ]);
 
     const enemies = parseCSV(enemyText);
-    const rewards = parseCSV(rewardText);
     const playerBase = parseKeyValueCSV(playerText);
 
-    const game = new Game(enemies, rewards, playerBase);
+    const game = new Game(enemies, playerBase);
     game.transition('title');
   } catch (err) {
     console.error('Failed to initialize game:', err);
