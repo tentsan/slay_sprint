@@ -73,6 +73,9 @@ function resolveEffect(user, target, effect, onLog) {
       }
       break;
     }
+    default:
+      console.warn(`resolveEffect: unknown action "${effect.action}"`);
+      break;
   }
 }
 
