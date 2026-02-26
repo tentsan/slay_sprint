@@ -60,7 +60,10 @@ export class Game {
 
     const tierSize = Math.ceil(sorted.length / 3);
     const tier = Math.min(Math.floor(battleNumber / 3), 2);
-    const tierEnemies = sorted.slice(tier * tierSize, (tier + 1) * tierSize);
+    let tierEnemies = sorted.slice(tier * tierSize, (tier + 1) * tierSize);
+    if (tierEnemies.length === 0) {
+      tierEnemies = sorted;
+    }
     const pick = tierEnemies[Math.floor(Math.random() * tierEnemies.length)];
     return JSON.parse(JSON.stringify(pick));
   }
